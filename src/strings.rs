@@ -1,4 +1,4 @@
-pub trait CanBeVowel {
+pub trait CanBeVowel: Into<char> {
     fn is_vowel(&self) -> bool;
 }
 
