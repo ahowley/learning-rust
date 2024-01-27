@@ -1,6 +1,10 @@
-use crate::strings::{pig_latin, CanBeVowel};
-use std::str::FromStr;
+use crate::{
+    employees::{Department, Employee, EmployeeRegistry},
+    strings::{pig_latin, CanBeVowel},
+};
+use std::{collections::HashMap, str::FromStr};
 
+mod employees;
 mod stats;
 mod strings;
 
@@ -84,5 +88,40 @@ fn main() {
     println!(
         "Pig Latin                 (): {}\n",
         pig_latin("").unwrap_or_default(),
+    );
+
+    let mut registry = EmployeeRegistry::new(HashMap::new());
+    println!(
+        "Empty Employee Registry            : {:?}",
+        registry.get_employees(Department::default())
+    );
+
+    registry.add_employee(&Employee::new("Alex"), &Department::Engineering);
+    println!(
+        "Employee Registry after adding     : {:?}",
+        registry.get_employees(Department::default())
+    );
+
+    registry.add_employees(&[
+        (Employee::new("Susan"), Department::default()),
+        (Employee::new("Bob"), Department::Sales),
+        (Employee::new("Jim"), Department::Engineering),
+    ]);
+    println!(
+        "Employee List after adding multiple: {:?}",
+        registry.get_employees(Department::default())
+    );
+
+    println!(
+        "Employee List         (Engineering): {:?}",
+        registry.get_employees(Department::Engineering)
+    );
+    println!(
+        "Employee List               (Sales): {:?}",
+        registry.get_employees(Department::Sales)
+    );
+    println!(
+        "Employee List                 (All): {:?}\n",
+        registry.get_employees(Department::default())
     );
 }
